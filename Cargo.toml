@@ -1,0 +1,48 @@
+[package]
+authors = ["Brandon Matthews <bmatthews@zipcar.com>"]
+name = "nucleo-l031k6-bsp"
+version = "0.1.0"
+categories = ["embedded", "hardware-support", "no-std"]
+description = "Board support crate for the ST L031K6-NUCLEO"
+keywords = ["embedded-hal", "stm32l031k6", "nucleo", "stm32l0x1", "stm32"]
+license = "0BSD"
+repository = "https://github.com/thenewwazoo/nucleo-l031k6-bsp/"
+
+[dependencies]
+cortex-m = "0.5.7"
+cortex-m-rt = "0.6.4"
+panic-abort = "0.3.1"
+stm32l0x1 = "0.13.1"
+
+[dependencies.embedded-hal]
+features = ["unproven"]
+version = "0.2.1"
+
+[dependencies.stm32l0x1-hal]
+features = ["STM32L031x6", "rt"]
+
+[patch]
+
+[patch.crates-io]
+
+# waiting on https://github.com/chocol4te/stm32l0x1/pull/2
+[patch.crates-io.stm32l0x1]
+git = "https://github.com/thenewwazoo/stm32l0x1.git"
+
+# also waits on the above, and can't publish due to [patch] section
+[patch.crates-io.stm32l0x1-hal]
+git = "https://github.com/thenewwazoo/stm32l0x1-hal.git"
+
+# waiting on https://github.com/rust-embedded/embedded-hal/pull/101
+[patch.crates-io.embedded-hal]
+git = "https://github.com/thenewwazoo/embedded-hal.git"
+branch = "adc"
+
+[profile]
+
+[profile.dev]
+codegen-units = 1
+debug = true
+incremental = false
+lto = true
+opt-level = 1
