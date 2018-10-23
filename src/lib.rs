@@ -92,11 +92,12 @@ pub struct Board<VDD, VCORE, RTC> {
 }
 
 /// Initialize the MCU and the board
-pub fn init<'p, 'f, VDD>(pwr: PWR, flash: FLASH, rcc: RCC) -> Board<VDD, VCoreRange2, RtcDis>
+pub fn init<VCORE>(pwr: PWR, flash: FLASH, rcc: RCC) -> Board<VddHigh, VCORE, RtcDis>
 where
-    stm32l0x1::PWR: Constrain<Power<VDD, VCoreRange2, RtcDis>>,
+    VCORE: Vos + FreqLimit + Latency,
 {
-    let mut pwr = pwr.constrain();
+    let pwr: Power<VddHigh, VCoreRange2, RtcDis> = pwr.constrain();
+    let mut pwr = pwr.into_vcore_range::<VCORE>();
     let mut flash = flash.constrain();
     let mut rcc = rcc.constrain();
 
@@ -104,11 +105,11 @@ where
         let cfgr = rcc.cfgr.config().unwrap();
 
         cfgr.msi.enable();
-        cfgr.msi.set_freq(clocking::MsiFreq::Hz_131_072);
+        cfgr.msi.set_freq(clocking::MsiFreq::Hz_2_097_000);
         cfgr.hsi16.enable();
-        cfgr.hclk_fclk = Hertz(131_072);
-        cfgr.pclk1 = Hertz(131_072);
-        cfgr.pclk2 = Hertz(131_072);
+        cfgr.hclk_fclk = Hertz(2_097_000);
+        cfgr.pclk1 = Hertz(2_097_000);
+        cfgr.pclk2 = Hertz(2_097_000);
         cfgr.sysclk_src = clocking::SysClkSource::MSI;
     }
 
@@ -166,13 +167,12 @@ impl<VDD, VCORE, RTC> Board<VDD, VCORE, RTC> {
     }
 
     /// Initialize the VCP UART (pass-through the STLink USB) and return Tx and Rx pins
-    pub fn vcp_usart_pins<T>(
+    pub fn vcp_usart<T>(
         &mut self,
         usart: USART2,
         tx_pin_a7: PA2<T>,
-        bps: Bps,
         clk_src: USARTClkSource,
-    ) -> (Tx<USART2>, Rx<USART2>) {
+    ) -> Serial<USART2, (PA2<AF::AF4>, PA15<AF::AF4>)> {
         // safe because we moved GPIOB when we created the Pins that gives us the PB3
         let gpioa = gpio::A::new(
             unsafe { stm32l0x1::Peripherals::steal() }.GPIOA,
@@ -190,18 +190,15 @@ impl<VDD, VCORE, RTC> Board<VDD, VCORE, RTC> {
             .into_alt_fun::<AF::AF4>();
         vcp_rx.set_pin_speed(PinSpeed::VeryHigh);
 
-        let vcp_serial = Serial::usart2(
+        usart2::rs232(
             usart,
             (vcp_tx, vcp_rx),
-            //(pins.0, pins.1),
-            bps,
+            Bps(115200),
             clk_src,
             self.rcc.cfgr.context().unwrap(),
             &mut self.rcc.apb1,
             &mut self.rcc.ccipr,
-        );
-
-        vcp_serial.split()
+        )
     }
 
     /// Initialize I2C1 and return the peripheral
@@ -210,7 +207,6 @@ impl<VDD, VCORE, RTC> Board<VDD, VCORE, RTC> {
         i2c1: I2C1,
         pins: (PB6<C>, PB7<A>),
     ) -> I2c<I2C1, (PB6<AF::AF1>, PB7<AF::AF1>)> {
-
         let i2c_sda = pins
             .1
             .into_output::<OpenDrain, PullUp>()
