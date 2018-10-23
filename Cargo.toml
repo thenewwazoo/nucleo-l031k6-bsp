@@ -1,7 +1,7 @@
 [package]
 authors = ["Brandon Matthews <bmatthews@zipcar.com>"]
 name = "nucleo-l031k6-bsp"
-version = "0.1.0"
+version = "0.1.1"
 categories = ["embedded", "hardware-support", "no-std"]
 description = "Board support crate for the ST L031K6-NUCLEO"
 keywords = ["embedded-hal", "stm32l031k6", "nucleo", "stm32l0x1", "stm32"]
@@ -20,14 +20,11 @@ version = "0.2.1"
 
 [dependencies.stm32l0x1-hal]
 features = ["STM32L031x6", "rt"]
+version = "0.6"
 
 [patch]
 
 [patch.crates-io]
-
-# waiting on https://github.com/chocol4te/stm32l0x1/pull/2
-[patch.crates-io.stm32l0x1]
-git = "https://github.com/thenewwazoo/stm32l0x1.git"
 
 # also waits on the above, and can't publish due to [patch] section
 [patch.crates-io.stm32l0x1-hal]
@@ -45,4 +42,4 @@ codegen-units = 1
 debug = true
 incremental = false
 lto = true
-opt-level = 1
+opt-level = 2
