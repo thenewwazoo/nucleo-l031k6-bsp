@@ -6,7 +6,7 @@ extern crate cortex_m;
 extern crate cortex_m_rt as rt;
 extern crate embedded_hal;
 extern crate nucleo_l031k6_bsp as bsp;
-extern crate panic_abort;
+extern crate panic_halt;
 extern crate stm32l0x1;
 extern crate stm32l0x1_hal as hal;
 

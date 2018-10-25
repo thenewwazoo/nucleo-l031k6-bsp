@@ -11,7 +11,7 @@ repository = "https://github.com/thenewwazoo/nucleo-l031k6-bsp/"
 [dependencies]
 cortex-m = "0.5.7"
 cortex-m-rt = "0.6.4"
-panic-abort = "0.3.1"
+panic-halt = "0.2.0"
 stm32l0x1 = "0.13.1"
 
 [dependencies.embedded-hal]
@@ -26,14 +26,13 @@ version = "0.6"
 
 [patch.crates-io]
 
-# also waits on the above, and can't publish due to [patch] section
+# waiting on https://github.com/rust-embedded/embedded-hal/pull/92
+[patch.crates-io.embedded-hal]
+git = "https://github.com/rust-embedded/embedded-hal.git"
+
+# also waits on the above, and can't publish due to its own [patch] section
 [patch.crates-io.stm32l0x1-hal]
 git = "https://github.com/thenewwazoo/stm32l0x1-hal.git"
-
-# waiting on https://github.com/rust-embedded/embedded-hal/pull/101
-[patch.crates-io.embedded-hal]
-git = "https://github.com/thenewwazoo/embedded-hal.git"
-branch = "adc"
 
 [profile]
 
