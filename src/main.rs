@@ -12,6 +12,7 @@ extern crate stm32l0x1_hal as hal;
 
 use cortex_m::asm;
 use cortex_m::peripheral::syst::SystClkSource;
+use embedded_hal::digital::StatefulOutputPin;
 use embedded_hal::prelude::*;
 use hal::gpio::PullDown;
 use rt::ExceptionFrame;
@@ -24,7 +25,7 @@ fn main() -> ! {
     let mut board = bsp::init::<hal::power::VCoreRange1>(d.PWR, d.FLASH, d.RCC);
 
     let ticks = board.rcc.cfgr.context().unwrap().sysclk().0;
-    board.systick_start(&mut p.SYST, SystClkSource::Core, ticks / 1000);
+    board.systick_start(&mut p.SYST, SystClkSource::Core, ticks / 5);
 
     let pins = board.pins(d.GPIOA, d.GPIOB, d.GPIOC);
 
@@ -33,7 +34,11 @@ fn main() -> ! {
 
     loop {
         if input_line.is_high() {
-            user_led.set_high();
+            if user_led.is_set_low() {
+                user_led.set_high();
+            } else {
+                user_led.set_low();
+            }
         } else {
             user_led.set_low();
         }
