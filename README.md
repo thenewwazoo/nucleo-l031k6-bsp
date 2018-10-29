@@ -29,7 +29,7 @@ Setup
 Example Code
 ------------
 The current [`example code`](src/main.rs) initializes the board:
-```
+```rust
 let mut p = cortex_m::Peripherals::take().unwrap();
 let d = hal::stm32l0x1::Peripherals::take().unwrap();
 
@@ -37,13 +37,13 @@ let mut board = bsp::init::<hal::power::VCoreRange1>(d.PWR, d.FLASH, d.RCC);
 ```
 
 Starts a system clock: 
-```
+```rust
 let ticks = board.rcc.cfgr.context().unwrap().sysclk().0;
 board.systick_start(&mut p.SYST, SystClkSource::Core, ticks / 1000);
 ```
 
 And initializes the D12 and D13 pins:
-```
+```rust
 let pins = board.pins(d.GPIOA, d.GPIOB, d.GPIOC);
 
 let mut user_led = board.user_led(pins.d13);
