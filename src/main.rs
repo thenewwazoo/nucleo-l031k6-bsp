@@ -25,7 +25,7 @@ fn main() -> ! {
     let mut board = bsp::init::<hal::power::VCoreRange1>(d.PWR, d.FLASH, d.RCC);
 
     let ticks = board.rcc.cfgr.context().unwrap().sysclk().0;
-    board.systick_start(&mut p.SYST, SystClkSource::Core, ticks / 1000);
+    board.systick_start(&mut p.SYST, SystClkSource::Core, ticks / 10);
 
     let pins = board.pins(d.GPIOA, d.GPIOB, d.GPIOC);
 
