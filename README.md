@@ -50,6 +50,6 @@ let mut user_led = board.user_led(pins.d13);
 let input_line = pins.d12.into_input::<PullDown>();
 ```
 
-It then enters a loop with a simple conditional check. If the D12 pin is set to `HIGH`, then D13 is set to `HIGH`, and vice versa. 
+It then enters a loop with a few simple conditional check. If the D12 pin is set to `HIGH`, then the D13 (LED) pin state toggles at a frequency of 5hz. If D12 is set to LOW, then nothing will happen.
 
 To test the example code, flash a board using the setup instructions above, and short the D12 and 3.3v pins on your ST NUCLEO-L031K6.
