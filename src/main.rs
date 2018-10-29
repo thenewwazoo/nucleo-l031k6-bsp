@@ -12,6 +12,7 @@ extern crate stm32l0x1_hal as hal;
 
 use cortex_m::asm;
 use cortex_m::peripheral::syst::SystClkSource;
+use embedded_hal::digital::StatefulOutputPin;
 use embedded_hal::prelude::*;
 use hal::gpio::PullDown;
 use rt::ExceptionFrame;
@@ -32,7 +33,7 @@ fn main() -> ! {
     let input_line = pins.d12.into_input::<PullDown>();
 
     loop {
-        if input_line.is_high() {
+        if user_led.is_set_low() {
             user_led.set_high();
         } else {
             user_led.set_low();
