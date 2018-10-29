@@ -25,7 +25,7 @@ fn main() -> ! {
     let mut board = bsp::init::<hal::power::VCoreRange1>(d.PWR, d.FLASH, d.RCC);
 
     let ticks = board.rcc.cfgr.context().unwrap().sysclk().0;
-    board.systick_start(&mut p.SYST, SystClkSource::Core, ticks / 10);
+    board.systick_start(&mut p.SYST, SystClkSource::Core, ticks / 5);
 
     let pins = board.pins(d.GPIOA, d.GPIOB, d.GPIOC);
 
@@ -33,8 +33,12 @@ fn main() -> ! {
     let input_line = pins.d12.into_input::<PullDown>();
 
     loop {
-        if user_led.is_set_low() {
-            user_led.set_high();
+        if input_line.is_high() {
+            if user_led.is_set_low() {
+                user_led.set_high();
+            } else {
+                user_led.set_low();
+            }
         } else {
             user_led.set_low();
         }
