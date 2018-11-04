@@ -2,7 +2,8 @@
 runner = 'arm-none-eabi-gdb-py'
 rustflags = [
   "-C", "link-arg=--print-memory-usage",
-  "-C", "link-arg=-Map=memory.map",
+  # commented the following line because cargo publish complains
+  #"-C", "link-arg=-Map=memory.map",
   "-C", "link-arg=-cref",
   "-C", "linker=arm-none-eabi-ld",
   "-C", "link-arg=-Tlink.x",
