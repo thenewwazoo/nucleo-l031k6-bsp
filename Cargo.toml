@@ -16,23 +16,11 @@ stm32l0x1 = "0.13.1"
 
 [dependencies.embedded-hal]
 features = ["unproven"]
-version = "0.2.1"
+version = "0.2.2"
 
 [dependencies.stm32l0x1-hal]
 features = ["STM32L031x6", "rt"]
-version = "0.6"
-
-[patch]
-
-[patch.crates-io]
-
-# waiting on https://github.com/rust-embedded/embedded-hal/pull/92
-[patch.crates-io.embedded-hal]
-git = "https://github.com/rust-embedded/embedded-hal.git"
-
-# also waits on the above, and can't publish due to its own [patch] section
-[patch.crates-io.stm32l0x1-hal]
-git = "https://github.com/thenewwazoo/stm32l0x1-hal.git"
+version = "0.7"
 
 [profile]
 
