@@ -11,9 +11,7 @@
 #![no_std]
 #![allow(unused_imports)]
 
-extern crate cortex_m;
-extern crate stm32l0x1;
-extern crate stm32l0x1_hal as hal;
+pub use stm32l0x1_hal as hal;
 
 use cortex_m::peripheral::syst::SystClkSource;
 use hal::common::Constrain;
@@ -25,7 +23,9 @@ use hal::rcc::clocking::*;
 use hal::rcc::{self, *};
 use hal::serial::{self, *};
 use hal::time::{self, *};
-use stm32l0x1::*;
+
+use stm32l0::stm32l0x1;
+use stm32l0::stm32l0x1::*;
 
 /// A configured user LED
 pub type Led = gpio::PB3<Output<PushPull, Floating>>;

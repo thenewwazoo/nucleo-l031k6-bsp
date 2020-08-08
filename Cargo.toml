@@ -7,20 +7,21 @@ description = "Board support crate for the ST L031K6-NUCLEO"
 keywords = ["embedded-hal", "stm32l031k6", "nucleo", "stm32l0x1", "stm32"]
 license = "0BSD"
 repository = "https://github.com/thenewwazoo/nucleo-l031k6-bsp/"
+edition = "2018"
 
 [dependencies]
-cortex-m = "0.5.7"
-cortex-m-rt = "0.6.4"
+cortex-m = "0.6.3"
+cortex-m-rt = "0.6.12"
 panic-halt = "0.2.0"
-stm32l0x1 = "0.13.1"
+embedded-hal = "1.0.0-alpha.1"
 
-[dependencies.embedded-hal]
-features = ["unproven"]
-version = "0.2.2"
+[dependencies.stm32l0]
+version = "0.11.0"
+features = ["stm32l0x1", "rt"]
 
 [dependencies.stm32l0x1-hal]
 features = ["STM32L031x6", "rt"]
-version = "0.7"
+version = "0.9"
 
 [profile]
 
