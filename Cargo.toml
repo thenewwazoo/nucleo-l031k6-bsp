@@ -1,27 +1,27 @@
 [package]
 authors = ["Brandon Matthews <bmatthews@zipcar.com>"]
 name = "nucleo-l031k6-bsp"
-version = "0.2.0"
+version = "0.3.0"
 categories = ["embedded", "hardware-support", "no-std"]
 description = "Board support crate for the ST L031K6-NUCLEO"
 keywords = ["embedded-hal", "stm32l031k6", "nucleo", "stm32l0x1", "stm32"]
 license = "0BSD"
 repository = "https://github.com/thenewwazoo/nucleo-l031k6-bsp/"
-edition = "2018"
+edition = "2021"
 
 [dependencies]
-cortex-m = "0.6.3"
-cortex-m-rt = "0.6.12"
+cortex-m = "0.7.2"
+cortex-m-rt = "0.7.2"
 panic-halt = "0.2.0"
-embedded-hal = "1.0.0-alpha.1"
+embedded-hal = "0.2.7"
 
 [dependencies.stm32l0]
-version = "0.11.0"
+version = "0.15.1"
 features = ["stm32l0x1", "rt"]
 
 [dependencies.stm32l0x1-hal]
 features = ["STM32L031x6", "rt"]
-version = "0.9"
+version = "0.11"
 
 [profile]
 

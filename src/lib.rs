@@ -190,7 +190,7 @@ impl<VDD, VCORE, RTC> Board<VDD, VCORE, RTC> {
             .into_alt_fun::<AF::AF4>();
         vcp_rx.set_pin_speed(PinSpeed::VeryHigh);
 
-        usart2::rs232(
+        serial::usart2::rs232(
             usart,
             (vcp_tx, vcp_rx),
             Bps(115200),

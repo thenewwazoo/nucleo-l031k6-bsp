@@ -7,8 +7,7 @@ use cortex_m::asm;
 use cortex_m::peripheral::syst::SystClkSource;
 use cortex_m_rt::ExceptionFrame;
 use cortex_m_rt::{entry, exception};
-use embedded_hal::digital::StatefulOutputPin;
-use embedded_hal::prelude::*;
+use embedded_hal::digital::v2::{InputPin, OutputPin, StatefulOutputPin};
 use hal::gpio::PullDown;
 use nucleo_l031k6_bsp as bsp;
 use stm32l0x1_hal as hal;
@@ -29,14 +28,14 @@ fn main() -> ! {
     let input_line = pins.d12.into_input::<PullDown>();
 
     loop {
-        if input_line.try_is_high().unwrap() {
-            if user_led.try_is_set_low().unwrap() {
-                user_led.try_set_high().unwrap();
+        if input_line.is_high().unwrap() {
+            if user_led.is_set_low().unwrap() {
+                user_led.set_high().unwrap();
             } else {
-                user_led.try_set_low().unwrap();
+                user_led.set_low().unwrap();
             }
         } else {
-            user_led.try_set_low().unwrap();
+            user_led.set_low().unwrap();
         }
 
         asm::wfi();
@@ -49,13 +48,13 @@ fn SysTick() {
 }
 
 #[exception]
-fn HardFault(_ef: &ExceptionFrame) -> ! {
+unsafe fn HardFault(_ef: &ExceptionFrame) -> ! {
     //panic!("HardFault at {:#?}", ef);
     panic!("Hardfault");
 }
 
 #[exception]
-fn DefaultHandler(_irqn: i16) {
+unsafe fn DefaultHandler(_irqn: i16) {
     //panic!("Unhandled exception (IRQn = {})", irqn);
     panic!("Unhandled exception");
 }
